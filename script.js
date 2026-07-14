@@ -28,14 +28,15 @@ async function getbackground() {
 
 window.onload=function(){
     clk();
+    weather();
     getbackground().then(function (imageUrl){
         if(!imageUrl) return;
         console.log(imageUrl);
 
         const backgroundElement = document.getElementById("background");
 
-        if (background){
-            background.style['background-image'] = `url('${imageUrl}')`;
+        if (backgroundElement){
+            backgroundElement.style['background-image'] = `url('${imageUrl}')`;
         }
     });
 };
@@ -64,4 +65,31 @@ function clk(){
 
         timeElem.innerText=`${fHrs}:${fMins}:${fSecs}`;
     },1000);
+}
+
+async function weather(){
+    const weathElement=document.getElementById("weather");
+    const url="https://api.open-meteo.com/v1/forecast?latitude=28.6519&longitude=77.2315&current=precipitation,temperature_2m,wind_speed_10m";
+    try{
+        const resp=await fetch(url);
+
+        if(!resp.ok){
+            throw new Error(`Status: ${resp.status}`);
+
+        }
+
+        const result=await resp.json();
+        console.log(result);
+
+        const temp=result.current.temperature_2m;
+        const wind=result.current.wind_speed_10m;
+        const preci=result.current.precipitation;
+
+        if(weathElement){
+            weathElement.innerText=` ${temp}°C ${wind}km/h ${preci}mm of rain`;
+        }
+
+    } catch (error){
+        console.log(error.message);
+    }
 }
