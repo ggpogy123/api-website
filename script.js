@@ -29,6 +29,7 @@ async function getbackground() {
 window.onload=function(){
     clk();
     weather();
+    Trivia();
     getbackground().then(function (imageUrl){
         if(!imageUrl) return;
         console.log(imageUrl);
@@ -92,4 +93,34 @@ async function weather(){
     } catch (error){
         console.log(error.message);
     }
+}
+
+async function Trivia() {
+    const trivElement=document.getElementById('trivia');
+    const url='https://opentdb.com/api.php?amount=1';
+
+    try{
+        const resp=await fetch(url);
+
+        if(!resp.ok){
+            throw new Error(`Status: ${resp.status}`);
+        }
+
+        const result=await resp.json();
+        console.log(result);
+
+        const question=result.results[0].question;
+        const answer=result.results[0].correct_answer;
+
+        if (trivElement){
+            trivElement.innerHTML=`<strong>Question:</strong> ${question} <br><br> <strong> Answer:</strong> ${answer}`;
+
+        }
+    } catch (error){
+        console.log(error.message);
+        if(trivElement){
+            trivElement.innerHTML='Cannot load trivia'
+        }
+    }
+    
 }

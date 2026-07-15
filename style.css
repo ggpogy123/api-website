@@ -7,6 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap:3vh;
 }
 
 html,
@@ -42,4 +43,11 @@ p{
 #weather{
     font-size: 3vh;
     margin:1vw;
+}
+
+#trivia{
+    font-size: 2.5vh;
+    font-weight: normal;
+    max-width: 600px;
+    text-align: center;
 }
